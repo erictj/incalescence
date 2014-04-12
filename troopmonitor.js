@@ -1,5 +1,8 @@
-// add clone to array prototype
+////////
+// setup
+////////
 
+// add clone to array prototype
 Array.prototype.clone = function() {
     return this.slice(0);
 }
@@ -28,29 +31,49 @@ for(var i = 0; i < 6; i++) {
     power[i] = 0;
 }
 
-// data stream
+
+
+
+
+
+///////////////////////////////
+// listening to the data stream
+///////////////////////////////
+
 s.on('data',function(data){
     
-    var index = parseInt(data.scout) - 1;;
+    var index = parseInt(data.scout) -1;
+    var whichArray = -1;
     
     switch(data.type) {
         case "led":
             led[index] = new LED(data);
+            // console.log((index+1) + " ", led[index]);
+            whichArray = 0;
             break;
         case "temp":
             temp[index] = new Temp(data);
+            console.log((index+1) + " ", temp[index]);
+            whichArray = 1;
             break;
         case "power":
             power[index] = new Power(data);
+            // console.log((index+1) + " ", power[index]);
+            whichArray = 2;
             break;
         default:
             // skip data object
     }
+    
+    // updateCanvas(whichArray);
+    
+    // console.log(data);
+    
 }).on('error',function(error){
     console.log('sync error',error);
 });
 
-// parse uselss information out of objects
+// parse useless information out of objects
 function LED(scout) {
     this.currentColor = scout.value.led.clone();
     this.idColor = scout.value.torch.clone();
