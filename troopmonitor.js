@@ -65,7 +65,7 @@ s.on('data',function(data){
             // skip data object
     }
     
-    // updateCanvas(whichArray);
+    // updateCanvas(whichArray, index+1);
     
     // console.log(data);
     
