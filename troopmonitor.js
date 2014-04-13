@@ -53,7 +53,7 @@ s.on('data',function(data){
             break;
         case "temp":
             temp[index] = new Temp(data);
-            console.log((index+1) + " ", temp[index]);
+            // console.log((index+1) + " ", temp[index]);
             whichArray = 1;
             break;
         case "power":
