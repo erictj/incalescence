@@ -1,0 +1,430 @@
+<html>
+<head>
+<title>incalescence - meshing the data and power of pinocc.io - Reno SpaceApps Challenge 2014 by Ericjt, Deadjaguars, AlphaOmegaOne, and iGibbs</title>
+<script src="https://api.pinocc.io/pinoccio.js"></script>
+<script>
+
+function initialise () {
+	var canvas = document.getElementById("myCanvas");
+	canvas.addEventListener("mousedown", doMouseDown, false);
+}
+
+function doMouseDown(event) {
+	var canvas_x = event.pageX
+	var canvas_y = event.pageY;
+	console.log('Canvas Clicked', ' (x,y) = (' + canvas_x + ',' + canvas_y + ')');
+}
+</script>
+
+</head>
+<body onLoad=initialise()>
+
+<center>
+<table width='80%' cellpadding='5'>
+<tr>
+<td bgcolor='#2f557d'>
+
+<div class="Object1160">  <OBJECT classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="468" height="60">
+
+  <PARAM name="movie" value="http://www.bulkdrive.com/incalescence/flashvortex.swf">
+
+  <PARAM name="quality" value="best">
+
+  <PARAM name="menu" value="true">
+
+  <PARAM name="allowScriptAccess" value="always">
+
+  <EMBED src="http://www.bulkdrive.com/incalescence/flashvortex.swf" quality="best" menu="true" width="468" height="60" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" allowScriptAccess="always">
+
+  </EMBED></OBJECT></div>
+
+
+</td>
+</tr>
+<tr>
+<td>
+<center>
+<canvas id="myCanvas" width="1000" height="120"></canvas>
+</center>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<script>
+// define scouts
+var c = document.getElementById("myCanvas");
+
+var ctxlead = c.getContext("2d");
+ctxlead.beginPath();
+// scout body
+ctxlead.arc(50,50,40,0,2*Math.PI);
+ctxlead.stroke();
+ctxlead.font = "10px Arial";
+ctxlead.fillText("Leader:",35,30);
+
+// scout led
+var ctxleadled = c.getContext("2d");
+ctxleadled.beginPath();
+ctxleadled.arc(52.5,82.5,5,0,2*Math.PI);
+ctxleadled.stroke();
+
+
+var ctxscout1 = c.getContext("2d");
+ctxscout1.beginPath();
+ctxscout1.arc(150,50,40,0,2*Math.PI);
+ctxscout1.stroke();
+ctxscout1.font = "10px Arial";
+ctxscout1.fillText("Scout1:",135,30);
+
+// scout1 led
+var ctxscout1led = c.getContext("2d");
+ctxscout1led.beginPath();
+ctxscout1led.arc(152.5,82.5,5,0,2*Math.PI);
+ctxscout1led.stroke();
+
+var ctxscout2 = c.getContext("2d");
+ctxscout2.beginPath();
+ctxscout2.arc(250,50,40,0,2*Math.PI);
+ctxscout2.stroke();
+ctxscout2.font = "10px Arial";
+ctxscout2.fillText("Scout2:",235,30);
+
+// scout2 led
+var ctxscout2led = c.getContext("2d");
+ctxscout2led.beginPath();
+ctxscout2led.arc(252.5,82.5,5,0,2*Math.PI);
+ctxscout2led.stroke();
+
+
+var ctxscout3 = c.getContext("2d");
+ctxscout3.beginPath();
+ctxscout3.arc(350,50,40,0,2*Math.PI);
+ctxscout3.stroke();
+ctxscout3.font = "10px Arial";
+ctxscout3.fillText("Scout3:",335,30);
+
+// scout3 led
+var ctxscout3led = c.getContext("2d");
+ctxscout3led.beginPath();
+ctxscout3led.arc(352.5,82.5,5,0,2*Math.PI);
+ctxscout3led.stroke();
+
+
+var ctxscout4 = c.getContext("2d");
+ctxscout4.beginPath();
+ctxscout4.arc(450,50,40,0,2*Math.PI);
+ctxscout4.stroke();
+ctxscout4.font = "10px Arial";
+ctxscout4.fillText("Scout4:",435,30);
+
+// scout4 led
+var ctxscout4led = c.getContext("2d");
+ctxscout4led.beginPath();
+ctxscout4led.arc(452.5,82.5,5,0,2*Math.PI);
+ctxscout4led.stroke();
+
+
+var ctxscout5 = c.getContext("2d");
+ctxscout5.beginPath();
+ctxscout5.arc(550,50,40,0,2*Math.PI);
+ctxscout5.stroke();
+ctxscout5.font = "10px Arial";
+ctxscout5.fillText("Scout5:",535,30);
+
+// scout5 led
+var ctxscout5led = c.getContext("2d");
+ctxscout5led.beginPath();
+ctxscout5led.arc(552.5,82.5,5,0,2*Math.PI);
+ctxscout5led.stroke();
+
+
+
+
+// this example works both on server and browser with browserify.
+ 
+// To get your auth token run ```pinoccio token``` in your terminal
+// You may need to login. To install the cli run ```sudo npm install -g pinoccio```
+ 
+var api = pinoccioAPI();
+api.token = "notoken";
+ 
+var s = api.sync();
+ 
+s.on('data',function(data){
+ 
+  // if the event is not type data or token its something you can query from /v1/stats as report={type}
+  console.log('event!',data);
+
+var today = new Date();
+
+var ctxlegend = c.getContext("2d");
+ctxlegend.clearRect(115, 100, 500 , 9 );
+// legend key
+ctxlegend.font = "10px Arial";
+ctxlegend.fillText('Current DateTime: ' + today,116,107);
+
+// update led color matching on sensor
+
+if (data.type == 'led') {
+
+    if (data.scout == '1') {
+        console.log('Scout LED Lead', data.value.led);
+	// scout power
+
+	var context = c.getContext("2d"); 
+	context.beginPath();
+	context.clearRect(52.5 - 5 - 1, 82.5 - 5 - 1, 5 * 2 + 2,  5 * 2 + 2);
+	context.closePath();
+
+	ctxleadled.fillStyle = "rgb(" + data.value.led + ")";
+	ctxleadled.beginPath();
+	ctxleadled.arc(52.5,82.5,5,0,2*Math.PI);
+	ctxleadled.stroke();
+	ctxleadled.closePath();
+	ctxleadled.fill();
+
+    }
+
+
+    if (data.scout == '2') {
+        console.log('Scout LED Lead', data.value.led);
+	// scout power
+
+	var context = c.getContext("2d"); 
+	context.beginPath();
+	context.clearRect(152.5 - 5 - 1, 82.5 - 5 - 1, 5 * 2 + 2,  5 * 2 + 2);
+	context.closePath();
+
+	ctxscout1led.fillStyle = "rgb(" + data.value.led + ")";
+	ctxscout1led.beginPath();
+	ctxscout1led.arc(152.5,82.5,5,0,2*Math.PI);
+	ctxscout1led.stroke();
+	ctxscout1led.closePath();
+	ctxscout1led.fill();
+
+    }
+
+    if (data.scout == '3') {
+        console.log('Scout LED Lead', data.value.led);
+	// scout power
+
+	var context = c.getContext("2d"); 
+	context.beginPath();
+	context.clearRect(252.5 - 5 - 1, 82.5 - 5 - 1, 5 * 2 + 2,  5 * 2 + 2);
+	context.closePath();
+
+	ctxscout2led.fillStyle = "rgb(" + data.value.led + ")";
+	ctxscout2led.beginPath();
+	ctxscout2led.arc(252.5,82.5,5,0,2*Math.PI);
+	ctxscout2led.stroke();
+	ctxscout2led.closePath();
+	ctxscout1led.fill();
+
+    }
+
+    if (data.scout == '4') {
+        console.log('Scout LED Lead', data.value.led);
+	// scout power
+
+	var context = c.getContext("2d"); 
+	context.beginPath();
+	context.clearRect(352.5 - 5 - 1, 82.5 - 5 - 1, 5 * 2 + 2,  5 * 2 + 2);
+	context.closePath();
+
+	ctxscout3led.fillStyle = "rgb(" + data.value.led + ")";
+	ctxscout3led.beginPath();
+	ctxscout3led.arc(352.5,82.5,5,0,2*Math.PI);
+	ctxscout3led.stroke();
+	ctxscout3led.closePath();
+	ctxscout3led.fill();
+
+    }
+
+
+    if (data.scout == '5') {
+        console.log('Scout LED Lead', data.value.led);
+	// scout power
+
+	var context = c.getContext("2d"); 
+	context.beginPath();
+	context.clearRect(452.5 - 5 - 1, 82.5 - 5 - 1, 5 * 2 + 2,  5 * 2 + 2);
+	context.closePath();
+
+	ctxscout4led.fillStyle = "rgb(" + data.value.led + ")";
+	ctxscout4led.beginPath();
+	ctxscout4led.arc(452.5,82.5,5,0,2*Math.PI);
+	ctxscout4led.stroke();
+	ctxscout4led.closePath();
+	ctxscout1led.fill();
+
+    }
+
+    if (data.scout == '6') {
+        console.log('Scout LED Lead', data.value.led);
+	// scout power
+
+	var context = c.getContext("2d"); 
+	context.beginPath();
+	context.clearRect(552.5 - 5 - 1, 82.5 - 5 - 1, 5 * 2 + 2,  5 * 2 + 2);
+	context.closePath();
+
+	ctxscout5led.fillStyle = "rgb(" + data.value.led + ")";
+	ctxscout5led.beginPath();
+	ctxscout5led.arc(552.5,82.5,5,0,2*Math.PI);
+	ctxscout5led.stroke();
+	ctxscout5led.closePath();
+	ctxscout5led.fill();
+
+    }
+
+}
+
+// update scouts with temp
+
+if (data.type == 'temp') {
+
+    if (data.scout == '1') {
+        console.log('Scout Temp Lead', data.value.current);
+        ctxlead.clearRect(34 , 50 , 50 , 14);
+        ctxlead.fillStyle = '#000000';
+        ctxlead.fillText('Temp: ' + data.value.current,35,60);
+    }
+
+
+    if (data.scout == '2') {
+        console.log('Scout Temp 1', data.value.current);
+        ctxscout1.clearRect(134 , 50 , 50 , 14);
+        ctxscout1.fillStyle = '#000000';
+        ctxscout1.fillText('Temp: ' + data.value.current,135,60);
+    }
+
+    if (data.scout == '3') {
+        console.log('Scout Temp 2', data.value.current);
+        ctxscout2.clearRect(234 , 50 , 50 , 14);
+        ctxscout2.fillStyle = '#000000';
+        ctxscout2.fillText('Temp: ' + data.value.current,235,60);
+    }
+
+
+
+    if (data.scout == '4') {
+        console.log('Scout Temp 3', data.value.current);
+        ctxscout3.clearRect(334 , 50 , 50 , 14);
+        ctxscout3.fillStyle = '#000000';
+        ctxscout3.fillText('Temp: ' + data.value.current,335,60);
+    }
+
+    if (data.scout == '5') {
+        console.log('Scout Temp 4', data.value.current);
+        ctxscout4.clearRect(434 , 50 , 50 , 14);
+        ctxscout4.fillStyle = '#000000';
+        ctxscout4.fillText('Temp: ' + data.value.current,435,60);
+    }
+
+    if (data.scout == '6') {
+        console.log('Scout Temp 5', data.value.current);
+        ctxscout5.clearRect(534 , 50 , 50 , 14);
+        ctxscout5.fillStyle = '#000000';
+        ctxscout5.fillText('Temp: ' + data.value.current,535,60);
+    }
+
+}
+
+// update scouts with power percentage
+
+
+if (data.type == 'power') {
+
+    if (data.scout == '1') {
+        console.log('Scout Power Lead', data.value.battery);
+        ctxlead.clearRect(30 , 62 , 50, 14);
+        ctxlead.fillStyle = '#000000';
+	ctxlead.font = "9px Arial";
+        ctxlead.fillText('Power: ' + data.value.battery + '%',31,72);
+    }
+
+    if (data.scout == '2') {
+        console.log('Scout Power 1', data.value.battery);
+        ctxscout1.clearRect(130 , 62 , 50 , 14);
+        ctxscout1.fillStyle = '#000000';
+	ctxscout1.font = "9px Arial";
+        ctxscout1.fillText('Power: ' + data.value.battery + '%',131,72);
+    }
+
+    if (data.scout == '3') {
+        console.log('Scout Power 2', data.value.battery);
+        ctxscout2.clearRect(230 , 62 , 50, 14);
+        ctxscout2.fillStyle = '#000000';
+	ctxscout2.font = "9px Arial";
+        ctxscout2.fillText('Power: ' + data.value.battery + '%',231,72);
+    }
+
+    if (data.scout == '4') {
+        console.log('Scout Power 3', data.value.battery);
+        ctxscout3.clearRect(330 , 62 , 50, 14);
+        ctxscout3.fillStyle = '#000000';
+	ctxscout3.font = "9px Arial";
+        ctxscout3.fillText('Power: ' + data.value.battery + '%',331,72);
+    }
+
+    if (data.scout == '5') {
+        console.log('Scout Power 2', data.value.battery);
+        ctxscout4.clearRect(430 , 62 , 50 , 14);
+        ctxscout4.fillStyle = '#000000';
+	ctxscout4.font = "9px Arial";
+        ctxscout4.fillText('Power: ' + data.value.battery + '%',430,72);
+    }
+
+    if (data.scout == '6') {
+        console.log('Scout Power 2', data.value.battery);
+        ctxscout5.clearRect(530 , 62 , 50 , 14);
+        ctxscout5.fillStyle = '#000000';
+	ctxscout5.font = "9px Arial";
+        ctxscout5.fillText('Power: ' + data.value.battery + '%',531,72);
+    }
+
+}
+
+
+}).on('error',function(error){
+ 
+  // after an error a new sync stream will have to be created.
+  // errors will happen due to connectivity etc.
+  console.log('sync error',error);
+ 
+});
+ 
+</script>
+
+</td>
+</tr>
+<tr>
+<td>
+<font size='+1'>
+<b>Project Code Name: "incalescence" - meshing the data and power of pinocc.io for NASA Reno SpaceApps Challenge 2014 </b>
+</font>
+<font size='-1'>
+<br>Description & Impact: Using pinocc.io hardware / api to aggregate and expose scout sensor data for use of by space apps challenge participants; deployed providing a dashboard / heads up display (HUD) graphical client side open-source javascript / canvas presentation and historical slide of pinocc.io troops, leaders and scouts.
+<p>Project Team: Erictj, Michael (Deadjaguars), Andy (AlphaOmegaOne), Ivan (iGibbs)
+<br>Challenge Project Website <a href='https://2014.spaceappschallenge.org/project/-incalescence/'>https://2014.spaceappschallenge.org/project/-incalescence/</a>
+<p>Vendor Hardware / Software : Pinoccio (website: <a href='https://pinocc.io/'>https://pinocc.io/</a> - <a href='https://docs.pinocc.io/'>https://docs.pinocc.io/</a> - <a href='https://hq.pinocc.io/troops/1'>SpaceApps Challenge Test Bed - https://hq.pinocc.io/troops/1</a> 
+<br>Project Date Windows: April 12-14, 2014
+<br>Project Location: University of Nevada, Reno - Mackey School of Mines, DeLaMare Library
+<p>Mission Plan - Project Cool IT! 2014 -  <a href='https://2014.spaceappschallenge.org/challenge/cool-it/'>https://2014.spaceappschallenge.org/challenge/cool-it/</a>
+<br>Mission Category - Earth Watch - <a href='https://2014.spaceappschallenge.org/challenge/category/earth-watch/'>https://2014.spaceappschallenge.org/challenge/category/earth-watch/</a>
+</font>
+</td>
+</tr>
+<tr>
+<td>
+&copy; <%=year(date())%> "incalescence" & pinocc.io&trade; . All rights reserved.
+</td>
+</tr>
+</table>
+
+</center>
+
+</body>
+</html>
